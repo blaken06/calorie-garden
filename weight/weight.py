@@ -132,26 +132,50 @@ if st.session_state.page == "🏠":
     st.header("🏠 Home")
     st.write("Welcome to your tracker 💪")
 
+
+
 elif st.session_state.page == "🍜":
     st.header("🍜 Food")
 
-    if st.button("🍜 Noodles (+580)"):
-        st.session_state.eaten += 580
+    # ---------------------------
+    # ⚡ QUICK ADD BUTTONS
+    # ---------------------------
+    st.subheader("Quick add")
+
+    if st.button("+100 calories"):
+        st.session_state.eaten += 100
         save_data()
 
-    if st.button("🥛 Milk (+150)"):
-        st.session_state.eaten += 150
+    if st.button("+250 calories"):
+        st.session_state.eaten += 250
         save_data()
 
-    if st.button("🥣 Cereal (+200)"):
-        st.session_state.eaten += 200
+    if st.button("+500 calories"):
+        st.session_state.eaten += 500
         save_data()
 
-    if st.button("💪 Serious Mass (+1250)"):
-        st.session_state.eaten += 1250
+    # ---------------------------
+    # ✍️ CUSTOM FOOD INPUT
+    # ---------------------------
+    st.subheader("Custom food")
+
+    food_name = st.text_input("Food name (optional)")
+    calories = st.number_input("Calories", min_value=1)
+
+    if st.button("Add food"):
+        st.session_state.eaten += calories
         save_data()
 
+        if food_name:
+            st.success(f"Added {food_name} (+{calories})")
+        else:
+            st.success(f"Added food (+{calories})")
+
+    # ---------------------------
+    # 📊 DISPLAY
+    # ---------------------------
     st.write("Calories eaten:", st.session_state.eaten)
+
 
 elif st.session_state.page == "🌱":
     st.header("🌱 Your Plant")
