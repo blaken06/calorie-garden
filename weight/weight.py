@@ -186,18 +186,22 @@ with col1:
     if st.button("🏠"):
         st.session_state.page = "🏠"
         st.rerun()
+        st.stop()
 
 with col2:
     if st.button("🍜"):
         st.session_state.page = "🍜"
         st.rerun()
+        st.stop()
 
 with col3:
     if st.button("🌱"):
         st.session_state.page = "🌱"
         st.rerun()
+        st.stop()
 
 with col4:
     if st.button("📈"):
         st.session_state.page = "📈"
         st.rerun()
+        st.stop()
