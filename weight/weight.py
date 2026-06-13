@@ -1,6 +1,42 @@
 import streamlit as st
 import json
 import os
+import random
+import datetime
+
+import datetime
+
+
+
+
+
+quotes = [
+    "Small steps every day turn into big changes 🌱",
+    "You don’t need motivation, you need consistency 💪",
+    "Future you is built by what you do today",
+    "One meal at a time, one win at a time",
+    "Progress, not perfection",
+    "Your body listens to what you feed it",
+    "Discipline beats motivation every time 🔥",
+    "Keep going — you’re closer than you think",
+    "Tiny habits build big transformations",
+]
+
+
+today = datetime.date.today()
+
+if "quote_day" not in st.session_state:
+    st.session_state.quote_day = today
+    st.session_state.quote = random.choice(quotes)
+
+elif st.session_state.quote_day != today:
+    st.session_state.quote_day = today
+    st.session_state.quote = random.choice(quotes)
+
+
+
+
+
 
 DATA_FILE = "data.json"
 
@@ -26,6 +62,8 @@ def save_data():
 
 
 data = load_data()
+
+
 
 if "eaten" not in st.session_state:
     st.session_state.eaten = data["eaten"]
@@ -129,8 +167,16 @@ if st.session_state.eaten >= st.session_state.goal:
 # ---------------------------
 
 if st.session_state.page == "🏠":
+    st.markdown(f"""
+> 💭 *{st.session_state.quote}*
+""")
+
     st.header("🏠 Home")
     st.write("Welcome to your tracker 💪")
+
+    if st.button("New motivation 🔁"):
+        st.session_state.quote = random.choice(quotes)
+        st.rerun()
 
 
 
