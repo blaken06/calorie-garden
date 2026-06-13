@@ -1,7 +1,4 @@
 import streamlit as st
-import os
-
-st.write("Current folder:", os.getcwd())
 
 # ---------------------------
 # 🌙 PAGE STATE
@@ -30,6 +27,24 @@ if "goal_achieved_today" not in st.session_state:
 # ---------------------------
 # 🎨 STYLE
 # ---------------------------
+
+
+st.markdown("""
+<style>
+div[data-testid="stHorizontalBlock"] {
+    flex-wrap: nowrap !important;
+}
+div[data-testid="column"] {
+    min-width: 0 !important;
+}
+button[kind="secondary"] {
+    width: 100%;
+}
+</style>
+""", unsafe_allow_html=True)
+
+
+
 st.markdown("""
 <style>
 .stApp {
@@ -44,6 +59,18 @@ div[data-testid="stMetric"] {
     background-color: #262730;
     padding: 15px;
     border-radius: 15px;
+}
+</style>
+""", unsafe_allow_html=True)
+
+st.markdown("""
+<style>
+div[data-testid="stHorizontalBlock"] {
+    flex-wrap: nowrap;
+}
+
+div[data-testid="stHorizontalBlock"] > div {
+    min-width: 0px;
 }
 </style>
 """, unsafe_allow_html=True)
@@ -153,20 +180,24 @@ if st.button("🔁 Reset Day"):
 # ---------------------------
 st.write("---")
 
-col1, col2, col3, col4 = st.columns(4)
+col1, col2, col3, col4 = st.columns(4, vertical_alignment="center")
 
 with col1:
     if st.button("🏠"):
         st.session_state.page = "🏠"
+        st.rerun()
 
 with col2:
     if st.button("🍜"):
         st.session_state.page = "🍜"
+        st.rerun()
 
 with col3:
     if st.button("🌱"):
         st.session_state.page = "🌱"
+        st.rerun()
 
 with col4:
     if st.button("📈"):
         st.session_state.page = "📈"
+        st.rerun()
