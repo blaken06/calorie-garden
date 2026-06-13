@@ -4,11 +4,6 @@ import os
 import random
 import datetime
 
-import datetime
-
-
-
-
 
 quotes = [
     "Small steps every day turn into big changes 🌱",
@@ -35,6 +30,19 @@ elif st.session_state.quote_day != today:
 
 
 
+st.session_state.setdefault("xp", 0)
+st.session_state.setdefault("plant_level", 0)
+st.session_state.setdefault("eaten", 0)
+st.session_state.setdefault("goal", 2000)
+st.session_state.setdefault("goal_achieved_today", False)
+
+
+
+
+
+
+
+
 
 
 
@@ -47,7 +55,7 @@ def load_data():
     return {
         "eaten": 0,
         "goal": 2000,
-        "plant_level": 0,
+        "xp": 0,
         "goal_achieved_today": False
     }
 
@@ -56,26 +64,27 @@ def save_data():
         json.dump({
             "eaten": st.session_state.eaten,
             "goal": st.session_state.goal,
+            "xp": st.session_state.xp,
             "plant_level": st.session_state.plant_level,
             "goal_achieved_today": st.session_state.goal_achieved_today
         }, f)
-
 
 data = load_data()
 
 
 
-if "eaten" not in st.session_state:
-    st.session_state.eaten = data["eaten"]
-
 if "goal" not in st.session_state:
     st.session_state.goal = data["goal"]
 
+if "xp" not in st.session_state:
+    st.session_state.xp = data.get("xp", 0)
+
 if "plant_level" not in st.session_state:
-    st.session_state.plant_level = data["plant_level"]
+    st.session_state.plant_level = data.get("plant_level", 0)
 
 if "goal_achieved_today" not in st.session_state:
     st.session_state.goal_achieved_today = data["goal_achieved_today"]
+
 
 
 # ---------------------------
@@ -156,24 +165,25 @@ if new_goal != st.session_state.goal:
 # ---------------------------
 if st.session_state.eaten >= st.session_state.goal:
     if not st.session_state.goal_achieved_today:
+        st.session_state.xp += 50
         st.session_state.plant_level += 1
+        st.session_state.plant_level = min(st.session_state.plant_level + 1, 5)
         st.session_state.goal_achieved_today = True
         save_data()
-        st.success("🌱 Your plant grew!")
+        st.success("🌱 Your plant grew! +50 XP")
         st.balloons()
+
+   
 
 # ---------------------------
 # 📄 PAGES
 # ---------------------------
 
 if st.session_state.page == "🏠":
-    st.markdown(f"""
-> 💭 *{st.session_state.quote}*
-""")
+    st.info(f"💭 {st.session_state.quote}")
 
     st.header("🏠 Home")
     st.write("Welcome to your tracker 💪")
-
     if st.button("New motivation 🔁"):
         st.session_state.quote = random.choice(quotes)
         st.rerun()
@@ -236,11 +246,25 @@ elif st.session_state.page == "🌱":
         "🌸 Blooming Plant"
     ]
 
-    level = min(st.session_state.plant_level, len(plants) - 1)
 
+    animals = [
+        "🐛 Caterpillar",
+        "🐢 Turtle",
+        "🐶 Dog",
+        "🦊 Fox",
+        "🐺 Wolf",
+
+    ]
+
+    animal = animals[min(st.session_state.xp // 200, len(animals) - 1)]
+    st.markdown("### 🐾 Your companion")
+    st.markdown(f"## {animal}")
+
+    level = min(st.session_state.plant_level, len(plants) - 1)
     st.markdown(f"## {plants[level]}")
 
     st.write("Keep hitting your calorie goal to grow your plant 💪🌱")
+
 
 elif st.session_state.page == "📈":
     st.header("📈 Progress")
